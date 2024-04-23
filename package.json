@@ -1,5 +1,5 @@
 {
-  "name": "project-final-server",
+  "name": "ypg2_back",
   "version": "1.0.0",
   "main": "dist/index.js",
   "scripts": {
@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.19.2",
+    "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.9.6"
   },
