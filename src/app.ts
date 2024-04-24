@@ -1,4 +1,5 @@
 import express, { Application } from "express";
+import cors from "cors";
 import IController from "./type/controller";
 import errorMiddleware from "./middleware/error.middleware";
 import logMiddleware from "./middleware/log.middleware";
@@ -18,6 +19,11 @@ export default class App {
   }
 
   private initPreMiddlewares() {
+    const corsOptions = {
+      credentials: true,
+    };
+
+    this.app.use(cors(corsOptions));
     this.app.use(express.json());
     this.app.use(logMiddleware);
   }
