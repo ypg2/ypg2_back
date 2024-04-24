@@ -20,6 +20,17 @@ export default class LectureRepository {
 
     let values = [];
 
+    if (dao.categoryID) {
+      query += `
+        LEFT JOIN
+          categorized_lectures AS cl
+          ON l.id = cl.lecture_id
+        WHERE
+          cl.category_id = ?
+      `;
+      values.push(dao.categoryID);
+    }
+
     if (dao.limit && !isNaN(dao.offset)) {
       query += "LIMIT ? OFFSET ?";
       values.push(dao.limit, dao.offset);
