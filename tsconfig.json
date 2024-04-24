@@ -4,6 +4,6 @@
     "strict": true,
     "skipLibCheck": true,
     "outDir": "./dist",
-    "typeRoots": ["./node_modules/@types", "./src/index.d"]
+    "typeRoots": ["./src/type", "./node_modules/@types"]
   }
 }

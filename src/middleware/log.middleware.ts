@@ -9,7 +9,8 @@ export default function logMiddleware(
 
   switch (req.method) {
     case "POST": {
-      req.body && log.push(`with ${JSON.stringify(req.body)}`);
+      Object.keys(req.body).length &&
+        log.push(`with ${JSON.stringify(req.body)}`);
     }
   }
 
