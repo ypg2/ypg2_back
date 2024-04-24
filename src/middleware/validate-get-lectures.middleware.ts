@@ -19,7 +19,7 @@ export default async function validateGetLectures(
       .customSanitizer((value) => Number(value)),
     query("page")
       .optional()
-      .isInt({ allow_leading_zeroes: false })
+      .isInt({ gt: 0, allow_leading_zeroes: false })
       .withMessage("유효하지 않은 page 형식 입니다.")
       .customSanitizer((value) => Number(value)),
   ];
