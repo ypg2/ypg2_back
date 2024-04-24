@@ -6,7 +6,8 @@
     "build": "tsc",
     "start": "set NODE_ENV=production && node --env-file=.env dist/index.js",
     "dev": "nodemon",
-    "data:categorized-lectures": "node -r ts-node/register --env-file=.env script/insert-categorized-lectures/index.ts"
+    "data:categorized-lectures": "node -r ts-node/register --env-file=.env script/insert-categorized-lectures/index.ts",
+    "data:selected-lectures": "node -r ts-node/register --env-file=.env script/insert-selected-lectures/index.ts"
   },
   "author": "Yongki Kim",
   "license": "ISC",
