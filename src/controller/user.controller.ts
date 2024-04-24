@@ -47,7 +47,7 @@ export default class UserController implements IController {
       const dto = req.body;
       const accessToken = await this.service.logIn(dto);
 
-      res.header("Access-Token", accessToken);
+      res.header("Authorization", accessToken);
       res.json({
         message: "로그인 되었습니다.",
       });

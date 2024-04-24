@@ -10,7 +10,7 @@ export default class UserService {
   iterations = 1000;
   repository = new UserRepository();
 
-  signUp = async (dto: IUserDto) => {
+  async signUp(dto: IUserDto) {
     const [row] = await this.repository.selectUser(dto.email);
 
     if (row) {
@@ -31,7 +31,7 @@ export default class UserService {
 
     const dao = { ...dto, salt, hashedPassword };
     this.repository.insertUser(dao);
-  };
+  }
 
   async logIn(dto: Omit<IUserDto, "username">) {
     const [row] = await this.repository.selectUser(dto.email);
