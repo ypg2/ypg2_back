@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 import ILectureDTO from "../dto/lecture.dto";
-import IController from "../interface/controller.interface";
+import IController from "../type/controller";
 import validateGetLectures from "../middleware/validate-get-lectures.middleware";
 import validateError from "../middleware/validate-error.middleware";
 import LectureService from "../service/lecture.service";

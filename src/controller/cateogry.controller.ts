@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from "express";
-import IController from "../interface/controller.interface";
+import IController from "../type/controller";
 import CategoryService from "../service/cateogry.service";
 
 export default class CategoryController implements IController {

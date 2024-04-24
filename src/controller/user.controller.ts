@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from "express";
-import IController from "../interface/controller.interface";
+import IController from "../type/controller";
 import validateError from "../middleware/validate-error.middleware";
 import validateLogIn from "../middleware/validate-log-in.middleware";
 import validateSignUp from "../middleware/validate-sign-up.middleware";
