@@ -16,8 +16,13 @@ export default class LectureService {
       throw new HttpError(404, message);
     }
 
+    const [row] = await this.repository.selectLecturesCount(dao.categoryID);
+
     return {
-      meta: { size: rows.length },
+      meta: {
+        totalSize: row.totalSize,
+        size: rows.length,
+      },
       data: rows,
     };
   }

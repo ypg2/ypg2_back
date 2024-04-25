@@ -41,4 +41,32 @@ export default class LectureRepository {
     const [result] = await pool.query<RowDataPacket[]>(query, values);
     return result;
   }
+
+  async selectLecturesCount(categoryID: number) {
+    const pool = this.database.pool;
+    let query = `
+      SELECT
+        COUNT(l.id) AS totalSize
+      FROM
+        lectures AS l
+    `;
+
+    let values = [];
+
+    if (categoryID) {
+      query += `
+        LEFT JOIN
+          categorized_lectures AS cl
+          ON l.id = cl.lecture_id
+        WHERE
+          cl.category_id = ?
+      `;
+      values.push(categoryID);
+    }
+
+    query += ";";
+
+    const [result] = await pool.query<RowDataPacket[]>(query, values);
+    return result;
+  }
 }
