@@ -21,6 +21,7 @@ export default class App {
   private initPreMiddlewares() {
     const corsOptions = {
       credentials: true,
+      exposedHeaders: ["Authorization"],
     };
 
     this.app.use(cors(corsOptions));
