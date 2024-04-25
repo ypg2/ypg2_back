@@ -74,6 +74,7 @@ export default class SelectedLectureController implements IController {
         userID,
         lectureID: lectureID as unknown as number,
       });
+
       res.json({
         message: "강의가 선택 취소 되었습니다.",
       });

@@ -9,16 +9,16 @@ export default class SelectedLectureRepository {
     const pool = this.database.pool;
     const query = `
     SELECT
-      sl.selected_lecture_id AS selectedLectureID,
+      sel.selected_lecture_id AS selectedLectureID,
       l.id AS lectureID,
-      l.title AS lectureTitle
+      l.title AS title
     FROM
-      selected_lectures AS sl
+      selected_lectures AS sel
     LEFT JOIN
       lectures AS l
-      ON sl.lecture_id = l.id
+      ON sel.lecture_id = l.id
     WHERE
-      sl.user_id = ?;
+      sel.user_id = ?;
     `;
 
     const values = [userID];
@@ -38,8 +38,7 @@ export default class SelectedLectureRepository {
         AND lecture_id = ?;
     `;
 
-    let values = [dao.userID, dao.lectureID];
-
+    const values = [dao.userID, dao.lectureID];
     const [result] = await pool.query<RowDataPacket[]>(query, values);
     return result;
   }

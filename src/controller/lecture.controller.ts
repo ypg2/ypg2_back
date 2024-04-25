@@ -26,7 +26,6 @@ export default class LectureController implements IController {
   getLectures = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const dto = req.query as unknown as ILectureDTO;
-
       const { meta, data } = await this.service.getLectures(dto);
 
       res.json({
