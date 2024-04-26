@@ -76,10 +76,10 @@ export default class LectureRepository {
       SELECT
         l.id AS lectureID,
         l.img_url AS imgURL,
-        l.title AS lectureTitle,
+        l.title,
         l.lecturer,
         l.introduction,
-        JSON_ARRAYAGG(c.title) AS categoryTitle
+        JSON_ARRAYAGG(c.title) AS categories
       FROM
         lectures AS l
       LEFT JOIN

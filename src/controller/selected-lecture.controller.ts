@@ -35,7 +35,6 @@ export default class SelectedLectureController implements IController {
   getLectures = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userID } = req.decodedToken!;
-
       const { meta, data } = await this.service.getLectures(userID);
 
       res.json({
