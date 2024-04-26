@@ -22,6 +22,7 @@ export default class App {
     const corsOptions = {
       credentials: true,
       exposedHeaders: ["Authorization"],
+      origin: true,
     };
 
     this.app.use(cors(corsOptions));
