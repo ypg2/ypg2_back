@@ -69,4 +69,33 @@ export default class LectureRepository {
     const [result] = await pool.query<RowDataPacket[]>(query, values);
     return result;
   }
+
+  async selectLecture(lectureID: number) {
+    const pool = this.database.pool;
+    const query = `
+      SELECT
+        l.id AS lectureID,
+        l.img_url AS imgURL,
+        l.title AS lectureTitle,
+        l.lecturer,
+        l.introduction,
+        JSON_ARRAYAGG(c.title) AS categoryTitle
+      FROM
+        lectures AS l
+      LEFT JOIN
+        categorized_lectures AS cl
+        ON l.id = cl.lecture_id
+      LEFT JOIN
+        categories AS c
+        ON cl.category_id = c.id
+      WHERE
+        l.id = ?
+      GROUP BY
+        l.id;
+    `;
+
+    const values = [lectureID];
+    const [result] = await pool.query<RowDataPacket[]>(query, values);
+    return result;
+  }
 }

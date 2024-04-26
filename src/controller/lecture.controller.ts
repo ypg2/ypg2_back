@@ -21,6 +21,7 @@ export default class LectureController implements IController {
       validateError,
       this.getLectures
     );
+    this.router.get(`${this.path}/:lectureID`, this.getLecture);
   }
 
   getLectures = async (req: Request, res: Response, next: NextFunction) => {
@@ -30,6 +31,21 @@ export default class LectureController implements IController {
 
       res.json({
         meta,
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  getLecture = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { lectureID } = req.params;
+      const data = await this.service.getLectrue(
+        lectureID as unknown as number
+      );
+
+      res.json({
         data,
       });
     } catch (error) {

@@ -26,4 +26,15 @@ export default class LectureService {
       data: rows,
     };
   }
+
+  async getLectrue(lectureID: number) {
+    const [row] = await this.repository.selectLecture(lectureID);
+
+    if (!row) {
+      const message = `요청하신 강의 ID (${lectureID}) 가 존재하지 않습니다.`;
+      throw new HttpError(404, message);
+    }
+
+    return row;
+  }
 }
