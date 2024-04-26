@@ -1,9 +1,11 @@
 import express, { Application } from "express";
 import cors from "cors";
+import {
+  errorMiddleware,
+  logMiddleware,
+  pathErrorMiddleware,
+} from "./middleware";
 import IController from "./type/controller";
-import errorMiddleware from "./middleware/error.middleware";
-import logMiddleware from "./middleware/log.middleware";
-import pathErrorMiddleware from "./middleware/path-error.middleware";
 
 export default class App {
   app: Application = express();

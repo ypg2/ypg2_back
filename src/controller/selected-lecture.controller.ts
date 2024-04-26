@@ -1,8 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 import IController from "../type/controller";
-import validateError from "../middleware/validate-error.middleware";
-import validateSelectedLecture from "../middleware/validate-selected-lecture.middleware";
-import verifyToken from "../middleware/verify-token.middleware";
+import { validateError, validateLectureID, verifyToken } from "../middleware";
 import SelectedLectureService from "../service/selected-lecture.service";
 
 export default class SelectedLectureController implements IController {
@@ -19,14 +17,14 @@ export default class SelectedLectureController implements IController {
     this.router.post(
       `${this.path}/:lectureID`,
       verifyToken,
-      validateSelectedLecture,
+      validateLectureID,
       validateError,
       this.postLecture
     );
     this.router.delete(
       `${this.path}/:lectureID`,
       verifyToken,
-      validateSelectedLecture,
+      validateLectureID,
       validateError,
       this.deleteLecture
     );

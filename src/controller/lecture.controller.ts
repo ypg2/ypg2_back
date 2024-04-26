@@ -1,8 +1,11 @@
 import { Router, Request, Response, NextFunction } from "express";
 import ILectureDTO from "../dto/lecture.dto";
 import IController from "../type/controller";
-import validateGetLectures from "../middleware/validate-get-lectures.middleware";
-import validateError from "../middleware/validate-error.middleware";
+import {
+  validateError,
+  validateLectureQuery,
+  validateLectureID,
+} from "../middleware";
 import LectureService from "../service/lecture.service";
 
 export default class LectureController implements IController {
@@ -17,11 +20,16 @@ export default class LectureController implements IController {
   initRoutes() {
     this.router.get(
       `${this.path}`,
-      validateGetLectures,
+      validateLectureQuery,
       validateError,
       this.getLectures
     );
-    this.router.get(`${this.path}/:lectureID`, this.getLecture);
+    this.router.get(
+      `${this.path}/:lectureID`,
+      validateLectureID,
+      validateError,
+      this.getLecture
+    );
   }
 
   getLectures = async (req: Request, res: Response, next: NextFunction) => {

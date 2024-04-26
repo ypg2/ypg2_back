@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { query } from "express-validator";
 
-export default async function validateGetLectures(
+export default async function validateLectureQuery(
   req: Request,
   res: Response,
   next: NextFunction

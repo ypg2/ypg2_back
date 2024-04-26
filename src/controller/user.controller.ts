@@ -1,8 +1,11 @@
 import { Router, Request, Response, NextFunction } from "express";
 import IController from "../type/controller";
-import validateError from "../middleware/validate-error.middleware";
-import validateLogIn from "../middleware/validate-log-in.middleware";
-import validateSignUp from "../middleware/validate-sign-up.middleware";
+import {
+  validateEmail,
+  validateError,
+  validateLogIn,
+  validateSignUp,
+} from "../middleware";
 import UserService from "../service/user.service";
 
 export default class UserController implements IController {
@@ -27,7 +30,12 @@ export default class UserController implements IController {
       validateError,
       this.logIn
     );
-    this.router.post(`${this.path}/reset-password`, this.postResetPassword);
+    this.router.post(
+      `${this.path}/reset-password`,
+      validateEmail,
+      validateError,
+      this.postResetPassword
+    );
     this.router.put(
       `${this.path}/reset-password`,
       validateLogIn,

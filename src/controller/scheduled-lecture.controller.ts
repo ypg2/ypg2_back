@@ -1,8 +1,11 @@
 import { Router, Request, Response, NextFunction } from "express";
 import IController from "../type/controller";
-import validateError from "../middleware/validate-error.middleware";
-import validateScheduledLecture from "../middleware/validate-scheduled-lecture.middleware";
-import verifyToken from "../middleware/verify-token.middleware";
+import {
+  validateError,
+  validateScheduledLectureBody,
+  validateScheduledLectureParam,
+  verifyToken,
+} from "../middleware";
 import ScheduledLectureService from "../service/scheduled-lecture.service";
 
 export default class ScheduledLectureController implements IController {
@@ -19,20 +22,24 @@ export default class ScheduledLectureController implements IController {
     this.router.post(
       `${this.path}/:selectedLectureID`,
       verifyToken,
-      validateScheduledLecture,
+      validateScheduledLectureParam,
+      validateScheduledLectureBody,
       validateError,
       this.postLecture
     );
     this.router.put(
       `${this.path}/:selectedLectureID/:scheduledLectureID`,
       verifyToken,
-      validateScheduledLecture,
+      validateScheduledLectureParam,
+      validateScheduledLectureBody,
       validateError,
       this.putLecture
     );
     this.router.delete(
       `${this.path}/:selectedLectureID/:scheduledLectureID`,
       verifyToken,
+      validateScheduledLectureParam,
+      validateError,
       this.deleteLecture
     );
   }
