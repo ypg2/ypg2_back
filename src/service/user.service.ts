@@ -33,7 +33,7 @@ export default class UserService {
     this.repository.insertUser(dao);
   }
 
-  async logIn(dto: Omit<IUserDto, "username">) {
+  async logIn(dto: IUserDto) {
     const [row] = await this.repository.selectUser(dto.email);
 
     if (!row) {
@@ -63,5 +63,35 @@ export default class UserService {
     );
 
     return accessToken;
+  }
+
+  async postResetPassword(email: string) {
+    const [row] = await this.repository.selectUser(email);
+
+    if (!row) {
+      const message = "요청하신 email 의 회원이 존재하지 않습니다.";
+      throw new HttpError(400, message);
+    }
+  }
+
+  async putResetPassword(dto: IUserDto) {
+    const salt = (await promisify(randomBytes)(this.bufLen)).toString("base64");
+    const hashedPassword = (
+      await promisify(pbkdf2)(
+        dto.password,
+        salt,
+        this.iterations,
+        this.bufLen,
+        "sha512"
+      )
+    ).toString("base64");
+
+    const dao = { ...dto, salt, hashedPassword };
+    const { affectedRows } = await this.repository.updateUser(dao);
+
+    if (!affectedRows) {
+      const message = "요청하신 email 의 회원이 존재하지 않습니다.";
+      throw new HttpError(400, message);
+    }
   }
 }

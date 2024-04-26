@@ -27,6 +27,13 @@ export default class UserController implements IController {
       validateError,
       this.logIn
     );
+    this.router.post(`${this.path}/reset-password`, this.postResetPassword);
+    this.router.put(
+      `${this.path}/reset-password`,
+      validateLogIn,
+      validateError,
+      this.putResetPassword
+    );
   }
 
   signUp = async (req: Request, res: Response, next: NextFunction) => {
@@ -50,6 +57,40 @@ export default class UserController implements IController {
       res.header("Authorization", accessToken);
       res.json({
         message: "로그인 되었습니다.",
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  postResetPassword = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const { email } = req.body;
+      await this.service.postResetPassword(email);
+
+      res.json({
+        message: "비밀번호 초기화가 요청 되었습니다.",
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  putResetPassword = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const dto = req.body;
+      await this.service.putResetPassword(dto);
+
+      res.json({
+        message: "비밀번호 초기화 되었습니다.",
       });
     } catch (error) {
       next(error);

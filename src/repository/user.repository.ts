@@ -41,4 +41,21 @@ export default class UserRepository {
     const [result] = await pool.query<ResultSetHeader>(query, values);
     return result;
   }
+
+  async updateUser(dao: IUserDto & { salt: string; hashedPassword: string }) {
+    const pool = this.database.pool;
+    const query = `
+      UPDATE
+        users
+      SET
+        salt = ?,
+        hashed_password = ?
+      WHERE
+        email = ?;
+    `;
+
+    const values = [dao.salt, dao.hashedPassword, dao.email];
+    const [result] = await pool.query<ResultSetHeader>(query, values);
+    return result;
+  }
 }
