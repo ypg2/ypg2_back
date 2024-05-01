@@ -36,7 +36,7 @@ export default class ScheduledLectureController implements IController {
       this.putLecture
     );
     this.router.delete(
-      `${this.path}/:selectedLectureID/:scheduledLectureID`,
+      `${this.path}/:scheduledLectureID`,
       verifyToken,
       validateScheduledLectureParam,
       validateError,
