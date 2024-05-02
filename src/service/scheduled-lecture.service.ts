@@ -1,4 +1,5 @@
 import IScheduledLectureDTO from "../dto/scheduled-lecture.dto";
+import ISelectedLectureDTO from "../dto/selected-lecture.dto";
 import HttpError from "../error/HttpError";
 import ScheduledLectureRepository from "../repository/scheduled-lecture.repository";
 import SelectedLectureRepository from "../repository/selected-lecture.repository";
@@ -20,7 +21,7 @@ export default class ScheduledLectureService {
     };
   }
 
-  async postLecture(dto: IScheduledLectureDTO & { lectureID: number }) {
+  async postLecture(dto: IScheduledLectureDTO) {
     const [row] = await this.repository.selectSchedule(dto);
 
     if (row) {
@@ -46,14 +47,14 @@ export default class ScheduledLectureService {
     await this.repository.updateLecture(dto);
   }
 
-  async deleteLecture(scheduledLectureID: number) {
-    const [row] = await this.repository.selectLecture(scheduledLectureID);
+  async deleteLecture(dto: ISelectedLectureDTO) {
+    const [row] = await this.repository.selectLecture(dto);
 
     if (!row) {
       const message = "삭제할 강의 시간이 존재하지 않습니다.";
       throw new HttpError(404, message);
     }
 
-    await this.repository.deleteLecture(scheduledLectureID);
+    await this.repository.deleteLecture(dto);
   }
 }

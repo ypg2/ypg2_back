@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction } from "express";
 import IController from "../type/controller";
 import {
   validateError,
+  validateLectureID,
   validateScheduledLectureBody,
   verifyToken,
 } from "../middleware";
@@ -21,20 +22,23 @@ export default class ScheduledLectureController implements IController {
     this.router.post(
       `${this.path}/:lectureID`,
       verifyToken,
+      validateLectureID,
       validateScheduledLectureBody,
       validateError,
       this.postLecture
     );
     this.router.put(
-      `${this.path}/:scheduledLectureID`,
+      `${this.path}/:lectureID`,
       verifyToken,
+      validateLectureID,
       validateScheduledLectureBody,
       validateError,
       this.putLecture
     );
     this.router.delete(
-      `${this.path}/:scheduledLectureID`,
+      `${this.path}/:lectureID`,
       verifyToken,
+      validateLectureID,
       validateError,
       this.deleteLecture
     );
@@ -80,12 +84,12 @@ export default class ScheduledLectureController implements IController {
   putLecture = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userID } = req.decodedToken;
-      const { scheduledLectureID } = req.params;
+      const { lectureID } = req.params;
       const { weekDayID, startAt, endAt } = req.body;
 
       const dto = {
         userID,
-        scheduledLectureID: scheduledLectureID as unknown as number,
+        lectureID: lectureID as unknown as number,
         weekDayID,
         startAt,
         endAt,
@@ -102,8 +106,14 @@ export default class ScheduledLectureController implements IController {
 
   deleteLecture = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { scheduledLectureID } = req.params;
-      await this.service.deleteLecture(scheduledLectureID as unknown as number);
+      const { userID } = req.decodedToken;
+      const { lectureID } = req.params;
+
+      const dto = {
+        userID,
+        lectureID: lectureID as unknown as number,
+      };
+      await this.service.deleteLecture(dto);
 
       res.json({
         message: "강의 시간이 삭제 되었습니다.",

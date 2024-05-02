@@ -1,5 +1,6 @@
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 import IScheduledLectureDTO from "../dto/scheduled-lecture.dto";
+import ISelectedLectureDTO from "../dto/selected-lecture.dto";
 import database from "../database";
 
 export default class ScheduledLectureRepository {
@@ -9,7 +10,6 @@ export default class ScheduledLectureRepository {
     const pool = this.database.pool;
     const query = `
       SELECT
-        sch.scheduled_lecture_id AS scheduledLectureID,        
         l.id AS lectureID,
         l.title AS title,
         sch.week_day_id AS weekDayID,
@@ -55,7 +55,7 @@ export default class ScheduledLectureRepository {
     return result;
   }
 
-  async selectLecture(scheduledLectureID: number) {
+  async selectLecture(dao: ISelectedLectureDTO) {
     const pool = this.database.pool;
     const query = `
       SELECT
@@ -63,35 +63,36 @@ export default class ScheduledLectureRepository {
       FROM
         scheduled_lectures
       WHERE
-        scheduled_lecture_id = ?;
+        user_id = ?
+        AND lecture_id = ?;
     `;
 
-    const values = [scheduledLectureID];
+    const values = [dao.userID, dao.lectureID];
     const [result] = await pool.query<RowDataPacket[]>(query, values);
     return result;
   }
 
-  async insertLecture(dao: IScheduledLectureDTO & { lectureID: number }) {
+  async insertLecture(dao: IScheduledLectureDTO) {
     const pool = this.database.pool;
     const query = `
       INSERT INTO scheduled_lectures
-        (          
+        (
+          user_id,
+          lecture_id,
           week_day_id,
           start_at,
-          end_at,
-          user_id,
-          lecture_id
+          end_at
         )
       VALUES
         (?, ?, ?, ?, ?);
     `;
 
     const values = [
+      dao.userID,
+      dao.lectureID,
       dao.weekDayID,
       dao.startAt,
       dao.endAt,
-      dao.userID,
-      dao.lectureID,
     ];
     const [result] = await pool.query<ResultSetHeader>(query, values);
     return result;
@@ -107,30 +108,33 @@ export default class ScheduledLectureRepository {
         start_at = ?,
         end_at = ?
       WHERE
-        scheduled_lecture_id = ?;
+        user_id = ?
+        AND lecture_id = ?;
     `;
 
     const values = [
       dao.weekDayID,
       dao.startAt,
       dao.endAt,
-      dao.scheduledLectureID,
+      dao.userID,
+      dao.lectureID,
     ];
     const [result] = await pool.query<ResultSetHeader>(query, values);
     return result;
   }
 
-  async deleteLecture(scheduledLectureID: number) {
+  async deleteLecture(dao: ISelectedLectureDTO) {
     const pool = this.database.pool;
     const query = `
       DELETE
       FROM
         scheduled_lectures
       WHERE
-        scheduled_lecture_id = ?;
+        user_id = ?
+        AND lecture_id = ?;
     `;
 
-    const values = [scheduledLectureID];
+    const values = [dao.userID, dao.lectureID];
     const [result] = await pool.query<ResultSetHeader>(query, values);
     return result;
   }

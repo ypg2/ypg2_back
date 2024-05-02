@@ -1,7 +1,7 @@
 export default interface IScheduledLectureDTO {
-  scheduledLectureID?: number;
+  userID: number;
+  lectureID: number;
   weekDayID: number;
   startAt: string;
   endAt: string;
-  userID: number;
 }

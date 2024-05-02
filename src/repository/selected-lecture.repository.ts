@@ -9,7 +9,6 @@ export default class SelectedLectureRepository {
     const pool = this.database.pool;
     const query = `
     SELECT
-      sel.selected_lecture_id AS selectedLectureID,
       l.id AS lectureID,
       l.title AS title
     FROM
