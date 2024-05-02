@@ -9,8 +9,7 @@ export default class ScheduledLectureRepository {
     const pool = this.database.pool;
     const query = `
       SELECT
-        sch.scheduled_lecture_id AS scheduledLectureID,
-        sel.selected_lecture_id AS selectedLectureID,
+        sch.scheduled_lecture_id AS scheduledLectureID,        
         l.id AS lectureID,
         l.title AS title,
         sch.week_day_id AS weekDayID,
@@ -19,13 +18,10 @@ export default class ScheduledLectureRepository {
       FROM
         scheduled_lectures AS sch
       LEFT JOIN
-        selected_lectures AS sel
-        ON sch.selected_lecture_id = sel.selected_lecture_id
-      LEFT JOIN
         lectures AS l
-        ON sel.lecture_id = l.id
+        ON sch.lecture_id = l.id
       WHERE
-        sel.user_id = ?
+        sch.user_id = ?
       ORDER BY
         sch.week_day_id,
         sch.start_at,
@@ -79,21 +75,23 @@ export default class ScheduledLectureRepository {
     const pool = this.database.pool;
     const query = `
       INSERT INTO scheduled_lectures
-        (
-          selected_lecture_id,
+        (          
           week_day_id,
           start_at,
-          end_at
+          end_at,
+          user_id,
+          lecture_id
         )
       VALUES
-        (?, ?, ?, ?);
+        (?, ?, ?, ?, ?);
     `;
 
     const values = [
-      dao.selectedLectureID,
       dao.weekDayID,
       dao.startAt,
       dao.endAt,
+      dao.userID,
+      dao.lectureID,
     ];
     const [result] = await pool.query<ResultSetHeader>(query, values);
     return result;
@@ -109,15 +107,13 @@ export default class ScheduledLectureRepository {
         start_at = ?,
         end_at = ?
       WHERE
-        selected_lecture_id = ?
-        AND scheduled_lecture_id = ?;
+        scheduled_lecture_id = ?;
     `;
 
     const values = [
       dao.weekDayID,
       dao.startAt,
-      dao.endAt,
-      dao.selectedLectureID,
+      dao.endAt,      
       dao.scheduledLectureID,
     ];
     const [result] = await pool.query<ResultSetHeader>(query, values);

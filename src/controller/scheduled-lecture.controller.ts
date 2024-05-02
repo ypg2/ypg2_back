@@ -80,11 +80,13 @@ export default class ScheduledLectureController implements IController {
 
   putLecture = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { selectedLectureID, scheduledLectureID } = req.params;
+      const { userID } = req.decodedToken;
+      const { lectureID, scheduledLectureID } = req.params;
       const { weekDayID, startAt, endAt } = req.body;
 
       const dto = {
-        selectedLectureID: selectedLectureID as unknown as number,
+        userID,
+        lectureID: lectureID as unknown as number,
         scheduledLectureID: scheduledLectureID as unknown as number,
         weekDayID,
         startAt,

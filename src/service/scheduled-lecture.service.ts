@@ -1,5 +1,4 @@
 import IScheduledLectureDTO from "../dto/scheduled-lecture.dto";
-import ISelectedLectureDTO from "../dto/selected-lecture.dto";
 import HttpError from "../error/HttpError";
 import ScheduledLectureRepository from "../repository/scheduled-lecture.repository";
 import SelectedLectureRepository from "../repository/selected-lecture.repository";
@@ -21,7 +20,7 @@ export default class ScheduledLectureService {
     };
   }
 
-  async postLecture(dto: IScheduledLectureDTO & ISelectedLectureDTO) {
+  async postLecture(dto: IScheduledLectureDTO) {
     const [row] = await this.repository.selectSchedule(dto);
 
     if (row) {
