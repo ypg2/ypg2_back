@@ -19,14 +19,14 @@ export default class ScheduledLectureController implements IController {
   initRoutes() {
     this.router.get(`${this.path}`, verifyToken, this.getLectures);
     this.router.post(
-      `${this.path}/:lectureID/:selectedLectureID`,
+      `${this.path}/:lectureID`,
       verifyToken,
       validateScheduledLectureBody,
       validateError,
       this.postLecture
     );
     this.router.put(
-      `${this.path}/:selectedLectureID/:scheduledLectureID`,
+      `${this.path}/:scheduledLectureID`,
       verifyToken,
       validateScheduledLectureBody,
       validateError,
@@ -57,13 +57,12 @@ export default class ScheduledLectureController implements IController {
   postLecture = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userID } = req.decodedToken;
-      const { lectureID, selectedLectureID } = req.params;
+      const { lectureID } = req.params;
       const { weekDayID, startAt, endAt } = req.body;
 
       const dto = {
         userID,
         lectureID: lectureID as unknown as number,
-        selectedLectureID: selectedLectureID as unknown as number,
         weekDayID,
         startAt,
         endAt,
@@ -81,12 +80,11 @@ export default class ScheduledLectureController implements IController {
   putLecture = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userID } = req.decodedToken;
-      const { lectureID, scheduledLectureID } = req.params;
+      const { scheduledLectureID } = req.params;
       const { weekDayID, startAt, endAt } = req.body;
 
       const dto = {
         userID,
-        lectureID: lectureID as unknown as number,
         scheduledLectureID: scheduledLectureID as unknown as number,
         weekDayID,
         startAt,

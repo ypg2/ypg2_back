@@ -20,7 +20,7 @@ export default class ScheduledLectureService {
     };
   }
 
-  async postLecture(dto: IScheduledLectureDTO) {
+  async postLecture(dto: IScheduledLectureDTO & { lectureID: number }) {
     const [row] = await this.repository.selectSchedule(dto);
 
     if (row) {

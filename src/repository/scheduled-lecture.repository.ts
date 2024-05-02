@@ -71,7 +71,7 @@ export default class ScheduledLectureRepository {
     return result;
   }
 
-  async insertLecture(dao: IScheduledLectureDTO) {
+  async insertLecture(dao: IScheduledLectureDTO & { lectureID: number }) {
     const pool = this.database.pool;
     const query = `
       INSERT INTO scheduled_lectures
@@ -113,7 +113,7 @@ export default class ScheduledLectureRepository {
     const values = [
       dao.weekDayID,
       dao.startAt,
-      dao.endAt,      
+      dao.endAt,
       dao.scheduledLectureID,
     ];
     const [result] = await pool.query<ResultSetHeader>(query, values);
