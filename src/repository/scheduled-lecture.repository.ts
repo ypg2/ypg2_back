@@ -37,6 +37,7 @@ export default class ScheduledLectureRepository {
     const pool = this.database.pool;
     const query = `
       SELECT
+        sch.week_day_id AS weekDayID,
         w.week_day AS weekDay,
         sch.start_at AS startAt,
         sch.end_at AS endAt
