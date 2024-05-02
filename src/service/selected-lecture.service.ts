@@ -1,5 +1,6 @@
 import ISelectedLectureDTO from "../dto/selected-lecture.dto";
 import HttpError from "../error/HttpError";
+import ScheduledLectureRepository from "../repository/scheduled-lecture.repository";
 import SelectedLectureRepository from "../repository/selected-lecture.repository";
 
 export default class SelectedLectureService {
@@ -24,6 +25,20 @@ export default class SelectedLectureService {
 
     if (row) {
       const message = "이미 강의가 선택 되었습니다.";
+      throw new HttpError(409, message);
+    }
+
+    const scheduledLectureRepository = new ScheduledLectureRepository();
+    const scheduledLectures = await scheduledLectureRepository.selectLectures(
+      dto.userID
+    );
+
+    const isScheduled = scheduledLectures.some(
+      (scheduledLecture) => scheduledLecture.lectureID === dto.lectureID
+    );
+
+    if (isScheduled) {
+      const message = "이미 강의 시간에 등록 되었습니다.";
       throw new HttpError(409, message);
     }
 
