@@ -1,6 +1,8 @@
 import IScheduledLectureDTO from "../dto/scheduled-lecture.dto";
+import ISelectedLectureDTO from "../dto/selected-lecture.dto";
 import HttpError from "../error/HttpError";
 import ScheduledLectureRepository from "../repository/scheduled-lecture.repository";
+import SelectedLectureRepository from "../repository/selected-lecture.repository";
 
 export default class ScheduledLectureService {
   repository = new ScheduledLectureRepository();
@@ -19,7 +21,7 @@ export default class ScheduledLectureService {
     };
   }
 
-  async postLecture(dto: IScheduledLectureDTO) {
+  async postLecture(dto: IScheduledLectureDTO & ISelectedLectureDTO) {
     const [row] = await this.repository.selectSchedule(dto);
 
     if (row) {
@@ -27,7 +29,11 @@ export default class ScheduledLectureService {
       throw new HttpError(409, message);
     }
 
-    await this.repository.insertLecture(dto);
+    const selectedLectureRepository = new SelectedLectureRepository();
+    await Promise.allSettled([
+      selectedLectureRepository.deleteLecture(dto),
+      this.repository.insertLecture(dto),
+    ]);
   }
 
   async putLecture(dto: IScheduledLectureDTO) {

@@ -7,7 +7,6 @@ import validateLectureID from "./validate-lecture-id.middleware";
 import validateLectureQuery from "./validate-lecture-query.middleware";
 import validateLogIn from "./validate-log-in.middleware";
 import validateScheduledLectureBody from "./validate-scheduled-lecture-body.middleware";
-import validateScheduledLectureParam from "./validate-scheduled-lecture-param.middleware";
 import validateSignUp from "./validate-sign-up.middleware";
 import verifyToken from "./verify-token.middleware";
 
@@ -21,7 +20,6 @@ export {
   validateLectureQuery,
   validateLogIn,
   validateScheduledLectureBody,
-  validateScheduledLectureParam,
   validateSignUp,
   verifyToken,
 };

@@ -3,7 +3,6 @@ import IController from "../type/controller";
 import {
   validateError,
   validateScheduledLectureBody,
-  validateScheduledLectureParam,
   verifyToken,
 } from "../middleware";
 import ScheduledLectureService from "../service/scheduled-lecture.service";
@@ -20,9 +19,8 @@ export default class ScheduledLectureController implements IController {
   initRoutes() {
     this.router.get(`${this.path}`, verifyToken, this.getLectures);
     this.router.post(
-      `${this.path}/:selectedLectureID`,
+      `${this.path}/:lectureID/:selectedLectureID`,
       verifyToken,
-      validateScheduledLectureParam,
       validateScheduledLectureBody,
       validateError,
       this.postLecture
@@ -30,7 +28,6 @@ export default class ScheduledLectureController implements IController {
     this.router.put(
       `${this.path}/:selectedLectureID/:scheduledLectureID`,
       verifyToken,
-      validateScheduledLectureParam,
       validateScheduledLectureBody,
       validateError,
       this.putLecture
@@ -38,7 +35,6 @@ export default class ScheduledLectureController implements IController {
     this.router.delete(
       `${this.path}/:scheduledLectureID`,
       verifyToken,
-      validateScheduledLectureParam,
       validateError,
       this.deleteLecture
     );
@@ -60,10 +56,13 @@ export default class ScheduledLectureController implements IController {
 
   postLecture = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { selectedLectureID } = req.params;
+      const { userID } = req.decodedToken;
+      const { lectureID, selectedLectureID } = req.params;
       const { weekDayID, startAt, endAt } = req.body;
 
       const dto = {
+        userID,
+        lectureID: lectureID as unknown as number,
         selectedLectureID: selectedLectureID as unknown as number,
         weekDayID,
         startAt,
