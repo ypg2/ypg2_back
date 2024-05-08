@@ -12,6 +12,11 @@ export default function logMiddleware(
       Object.keys(req.body).length &&
         log.push(`with ${JSON.stringify(req.body)}`);
     }
+
+    case "PUT": {
+      Object.keys(req.body).length &&
+        log.push(`with ${JSON.stringify(req.body)}`);
+    }
   }
 
   console.log(log.join(" "));
