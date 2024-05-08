@@ -17,14 +17,14 @@ export default async function validateScheduledLectureBody(
     body("startAt")
       .notEmpty()
       .withMessage("startAt 이 존재하지 않습니다.")
-      .matches(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/)
+      .matches(/^(([01]?[0-9]|2[0-3]):(?:00|30))|24:00$/)
       .withMessage("유효하지 않은 startAt 형식 입니다."),
     body("endAt")
       .notEmpty()
       .withMessage("endAt 이 존재하지 않습니다.")
       .custom((value) => value > req.body.startAt)
       .withMessage("startAt 보다 이전 시간 입니다.")
-      .matches(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/)
+      .matches(/^(([01]?[0-9]|2[0-3]):(?:00|30))|24:00$/)
       .withMessage("유효하지 않은 endAt 형식 입니다."),
   ];
 
