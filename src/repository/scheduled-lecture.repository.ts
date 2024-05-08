@@ -37,6 +37,7 @@ export default class ScheduledLectureRepository {
     const pool = this.database.pool;
     const query = `
       SELECT
+        sch.lecture_id AS lectureID,
         sch.week_day_id AS weekDayID,
         w.week_day AS weekDay,
         sch.start_at AS startAt,
@@ -47,19 +48,12 @@ export default class ScheduledLectureRepository {
         week_days AS w
         ON sch.week_day_id = w.id
       WHERE
-        sch.lecture_id = ?
-        AND sch.user_id = ?
+        sch.user_id = ?
         AND sch.week_day_id = ?
         AND NOT (sch.end_at <= ? OR sch.start_at >= ?);
     `;
 
-    const values = [
-      dao.lectureID,
-      dao.userID,
-      dao.weekDayID,
-      dao.startAt,
-      dao.endAt,
-    ];
+    const values = [dao.userID, dao.weekDayID, dao.startAt, dao.endAt];
     const [result] = await pool.query<RowDataPacket[]>(query, values);
     return result;
   }

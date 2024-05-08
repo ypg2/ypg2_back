@@ -41,6 +41,7 @@ export default class ScheduledLectureService {
 
     if (
       row &&
+      row.lectureID === dto.lectureID &&
       row.weekDayID === dto.weekDayID &&
       row.startAt === dto.startAt &&
       row.endAt === dto.endAt
