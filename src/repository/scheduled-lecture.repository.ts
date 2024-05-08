@@ -47,11 +47,19 @@ export default class ScheduledLectureRepository {
         week_days AS w
         ON sch.week_day_id = w.id
       WHERE
-        sch.week_day_id = ?
+        sch.lecture_id = ?
+        AND sch.user_id = ?
+        AND sch.week_day_id = ?
         AND NOT (sch.end_at <= ? OR sch.start_at >= ?);
     `;
 
-    const values = [dao.weekDayID, dao.startAt, dao.endAt];
+    const values = [
+      dao.lectureID,
+      dao.userID,
+      dao.weekDayID,
+      dao.startAt,
+      dao.endAt,
+    ];
     const [result] = await pool.query<RowDataPacket[]>(query, values);
     return result;
   }
