@@ -49,6 +49,11 @@ export default class ScheduledLectureService {
       throw new HttpError(304);
     }
 
+    if (row && row.lectureID === dto.lectureID) {
+      await this.repository.updateLecture(dto);
+      return;
+    }
+
     if (row) {
       const message = `요청하신 요일 (${row.weekDay}) 은 이미 등록된 강의 시간 (${row.startAt} ~ ${row.endAt}) 과 겹칩니다.`;
       throw new HttpError(409, message);
